@@ -92,11 +92,6 @@ class Ao3Fetcher {
 
             if (pageCountIsValid) {
                 for (let thisPage = 2; thisPage < intPageCount + 1; thisPage++) {
-                    console.log("```````````````````````````````````````");
-                    console.log("```````````````````````````````````````");
-                    console.log("getting next page");
-                    console.log("```````````````````````````````````````");
-                    console.log("```````````````````````````````````````");
                     paginatedUrl = `${this.url}?page=${thisPage}`;
                     let html = await this.fetchPosts(paginatedUrl);
                     let dom = new JSDOM(html, {url: paginatedUrl});
@@ -111,7 +106,7 @@ class Ao3Fetcher {
     }
 
 
-// take a jsDom document obj and return a list of fic data objects
+    // take a jsDom document obj and return a list of fic data objects
     getPageOfFics(document) {
         const fics = document.querySelectorAll("li.work");
         let ficDataForPage = [];

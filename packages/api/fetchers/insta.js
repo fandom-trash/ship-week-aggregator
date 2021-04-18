@@ -8,6 +8,7 @@ const dayjs = require('dayjs')
 const tags = require("../tags");
 
 class InstaFetcher {
+    // {"message":"Please wait a few minutes before you try again.","status":"fail"} 5:48pm
     constructor(forReal = true) {
         this.authState = { authenticated: false, status: 'not attempted' };
         this.forReal = forReal;
@@ -31,6 +32,7 @@ class InstaFetcher {
             : await this.fakeFetch();
 
         if (!results) {
+            // TODO log + alert
             return false;
         }
 
@@ -53,15 +55,22 @@ class InstaFetcher {
 
     async fetchPosts() {
         if (!this.authState.authenticated) {
-            this.authState = await client.login();
+            try {
+                this.authState = await client.login();
+            } catch(err) {
+                // err.statusCode === 429 means you're rate limited
 
-            if (this.authState.authenticated) {
-                return await client.getPhotosByHashtag({ hashtag: tags.INSTA })
-            } else {
                 //TODO log auth failure + alert
 				console.log(
-                    `INSTAGRAM AUTH FAILED WITH AUTH STATE = {authenticated: ${this.authState.authenticated}, state: ${this.authState.status}`
+                    `INSTAGRAM AUTH FAILED WITH STATUS CODE = ${err.statusCode}`
                 );
+            }
+
+            if (this.authState.authenticated) {
+                return await client.getPhotosByHashtag({ hashtag: tags.INSTA });
+
+            } else {
+                return [];
             }
         }
     };
