@@ -8,7 +8,7 @@ const dayjs = require('dayjs')
 
 class InstaFetcher {
     constructor(forReal = true) {
-        this.isLoggedIn = false;
+        this.authState = { authenticated: false, status: 'not attempted' };
         this.forReal = forReal;
         this.cache = [];
         this.update();
@@ -29,6 +29,10 @@ class InstaFetcher {
             ? await this.fetchPosts()
             : await this.fakeFetch();
 
+        if (!results) {
+            return false;
+        }
+
         const posts = results.hashtag.edge_hashtag_to_media.edges.map(edge => edge.node);
         const parsedPosts = this.parsePosts(posts);
 
@@ -47,12 +51,18 @@ class InstaFetcher {
     }
 
     async fetchPosts() {
-        if (!this.isLoggedIn) {
-            await client.login()
-            this.isLoggedIn = true;
-        }
+        if (!this.authState.authenticated) {
+            this.authState = await client.login();
 
-        return await client.getPhotosByHashtag({ hashtag: 'kataangweek' })
+            if (this.authState.authenticated) {
+                return await client.getPhotosByHashtag({ hashtag: 'kataangweek2020' })
+            } else {
+                //TODO log auth failure + alert
+				console.log(
+                    `INSTAGRAM AUTH FAILED WITH AUTH STATE = {authenticated: ${this.authState.authenticated}, state: ${this.authState.status}`
+                );
+            }
+        }
     };
 
     parsePosts(posts) {
