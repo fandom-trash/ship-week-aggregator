@@ -10,7 +10,7 @@
         "start": "concurrently --kill-others-on-fail \"yarn api\" \"yarn frontend\"",
         "frontend": "yarn workspace frontend start",
         "api": "yarn workspace ship-week-aggregator start",
-        "build": "yarn workspace frontend build && cp -r packages/frontend/build/* packages/api/public",
+        "build": "yarn workspace frontend build && cp -r packages/frontend/build packages/api/public",
         "start:prod": "yarn api"
 
     }
