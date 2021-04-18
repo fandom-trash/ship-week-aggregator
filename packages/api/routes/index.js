@@ -10,9 +10,9 @@ const fetchers = [
     new insta.InstaFetcher(forReal),
 ];
 
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+// router.get('/', function(req, res, next) {
+//   res.render('index', { title: 'Express' });
+// });
 
 router.get('/posts', async function(req, res, next) {
     const posts = fetchers.reduce((posts, fetcher) => {
