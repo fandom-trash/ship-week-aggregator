@@ -4,15 +4,11 @@ var router = express.Router();
 var ao3 = require('../fetchers/ao3');
 var insta = require('../fetchers/insta');
 
-const forReal = false;
+const forReal = true;
 const fetchers = [
     new ao3.Ao3Fetcher(forReal),
-    new insta.InstaFetcher(forReal),
+    // new insta.InstaFetcher(forReal),
 ];
-
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
 
 router.get('/posts', async function(req, res, next) {
     const posts = fetchers.reduce((posts, fetcher) => {

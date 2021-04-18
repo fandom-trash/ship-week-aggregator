@@ -49,7 +49,7 @@ class Ao3Fetcher {
 
     async fetchPosts() {
         let response = await fetch(url);
-        return await response.text();
+        let html = await response.text();
         let dom = new JSDOM(html, {url: url});
         let document = dom.window.document;
         let ficData = this.getPageOfFics(document);
