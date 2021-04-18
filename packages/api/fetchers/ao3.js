@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const fakeData = require('./mockAo3Data');
+const fakeHTML = require('./mockAo3HTML');
 const slugify = require('slugify')
 const dayjs = require('dayjs')
 const tags = require("../tags.json");
@@ -26,10 +26,11 @@ class Ao3Fetcher {
 
     async update() {
         console.log('ao3 updating')
-        const ao3Posts = this.forReal
+        const htmlString = this.forReal
             ? await this.fetchPosts()
             : await this.fakeFetch();
 
+        const ao3Posts = await this.parsePosts(htmlString);
         const postsForCache = ao3Posts.map(post => ({
             ...post, id: slugify(`${post.source} ${post.title}`)
         }));
@@ -42,15 +43,17 @@ class Ao3Fetcher {
     }
 
     async fakeFetch() {
-        return fakeData.map(datum => {
-            return {...datum, date: dayjs(datum.date).toDate()};
-        });
+        return fakeHTML;
     }
 
     async fetchPosts() {
         let response = await fetch(url);
-        let html = await response.text();
-        let dom = new JSDOM(html, {url: url});
+        return await response.text();
+    };
+
+
+    async parsePosts(htmlString) {
+        let dom = new JSDOM(htmlString, {url: url});
         let document = dom.window.document;
         let ficData = this.getPageOfFics(document);
 
@@ -79,7 +82,7 @@ class Ao3Fetcher {
             }
         }
         return ficData;
-    };
+    }
 
 
 // take a jsDom document obj and return a list of fic data objects
@@ -114,7 +117,7 @@ class Ao3Fetcher {
     getSummary(fic) {
         const summaryContainer = fic.querySelector("blockquote.summary");
         if (summaryContainer) {
-            const paragraphs = summaryContainer.querySelectorAll("p").innerHTML;
+            const paragraphs = summaryContainer.querySelectorAll("p");
             if (!paragraphs) {
                 return null;
             }
