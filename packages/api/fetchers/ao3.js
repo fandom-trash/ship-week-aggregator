@@ -6,12 +6,13 @@ const slugify = require('slugify')
 const dayjs = require('dayjs')
 const tags = require("../tags.json");
 
-const url = `https://archiveofourown.org/tags/${tags.AO3}/works`;
 
 class Ao3Fetcher {
     constructor(forReal = true) {
+        this.url = `https://archiveofourown.org/tags/${tags.AO3}/works`;
         this.forReal = forReal;
         this.cache = [];
+        this.cacheIds = [];
         this.update();
         this.refreshRateMinutes = 5;
         setInterval(
@@ -25,9 +26,11 @@ class Ao3Fetcher {
     }
 
     async update() {
+        // TODO error handling for this whole janky-ass thing
         console.log('ao3 updating')
+
         const htmlString = this.forReal
-            ? await this.fetchPosts()
+            ? await this.fetchPosts(this.url)
             : await this.fakeFetch();
 
         const ao3Posts = await this.parsePosts(htmlString);
@@ -35,31 +38,50 @@ class Ao3Fetcher {
             ...post, id: slugify(`${post.source} ${post.title}`)
         }));
 
-        //todo: only add new things
-        //todo: update pagination code to grap page 1 (probs)
+        this.addPostsToCache(postsForCache);
+    }
 
-        this.cache = postsForCache;
+    refreshCacheIds() {
+        this.cacheIds = this.cache.map(post => post.id);
+    }
 
+    addPostsToCache(posts) {
+        // we only paginate through the full results
+        // if the cache is empty. checking this prevents
+        // first page dupes from being cached
+
+        if (this.cacheIds.length !== this.cache.length) {
+            this.refreshCacheIds();
+        }
+
+        posts.forEach(post => {
+            if (!this.cacheIds.includes(post.id)) {
+                this.cache.push(post);
+            }
+        });
+
+        this.refreshCacheIds();
     }
 
     async fakeFetch() {
         return fakeHTML;
     }
 
-    async fetchPosts() {
+    async fetchPosts(url) {
         let response = await fetch(url);
         return await response.text();
     };
 
 
     async parsePosts(htmlString) {
-        let dom = new JSDOM(htmlString, {url: url});
+        let dom = new JSDOM(htmlString, {url: this.url});
         let document = dom.window.document;
         let ficData = this.getPageOfFics(document);
 
         const isPaginaged = document.querySelector("ol.pagination.actions") !== null;
+        const isFirstFetch = this.cache.length === 0;
 
-        if (isPaginaged) {
+        if (isFirstFetch && isPaginaged) {
             // # of children of the pagination element
             const childCount = document.querySelector("ol.pagination.actions").childElementCount;
             const lastPageLink = document.querySelector("ol.pagination.actions").children[childCount - 2];
@@ -70,10 +92,14 @@ class Ao3Fetcher {
 
             if (pageCountIsValid) {
                 for (let thisPage = 2; thisPage < intPageCount + 1; thisPage++) {
-                    paginatedUrl = `${url}?page=${thisPage}`;
-                    let response = await fetch(paginatedUrl);
-                    let html = await response.text();
-                    let dom = new JSDOM(html, {url: url});
+                    console.log("```````````````````````````````````````");
+                    console.log("```````````````````````````````````````");
+                    console.log("getting next page");
+                    console.log("```````````````````````````````````````");
+                    console.log("```````````````````````````````````````");
+                    paginatedUrl = `${this.url}?page=${thisPage}`;
+                    let html = await this.fetchPosts(paginatedUrl);
+                    let dom = new JSDOM(html, {url: paginatedUrl});
                     let document = dom.window.document;
                     let fics = document.querySelectorAll("li.work");
                     let parsedFics = this.getPageOfFics(document);
