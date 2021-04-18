@@ -5,6 +5,7 @@ const client = new Instagram({ username, password });
 const slugify = require('slugify')
 const fakeData = require('./mockInstaData');
 const dayjs = require('dayjs')
+const tags = require("../tags");
 
 class InstaFetcher {
     constructor(forReal = true) {
@@ -55,7 +56,7 @@ class InstaFetcher {
             this.authState = await client.login();
 
             if (this.authState.authenticated) {
-                return await client.getPhotosByHashtag({ hashtag: 'kataangweek2020' })
+                return await client.getPhotosByHashtag({ hashtag: tags.INSTA })
             } else {
                 //TODO log auth failure + alert
 				console.log(

@@ -4,8 +4,9 @@ const { JSDOM } = jsdom;
 const fakeData = require('./mockAo3Data');
 const slugify = require('slugify')
 const dayjs = require('dayjs')
+const tags = require("../tags.json");
 
-const url = "https://archiveofourown.org/tags/Kataang%20Week%202020/works";
+const url = `https://archiveofourown.org/tags/${tags.AO3}/works`;
 
 class Ao3Fetcher {
     constructor(forReal = true) {
