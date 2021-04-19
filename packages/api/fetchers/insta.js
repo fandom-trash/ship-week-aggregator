@@ -9,7 +9,6 @@ const tags = require("../tags");
 const constants = require("../constants.json");
 
 class InstaFetcher {
-    // {"message":"Please wait a few minutes before you try again.","status":"fail"} 5:48pm
     constructor(forReal = true) {
         this.authState = { authenticated: false, status: 'not attempted' };
         this.forReal = forReal;
