@@ -2,6 +2,8 @@ import './App.css';
 import {useState, useEffect} from 'react';
 import Ao3Post from './components/Ao3Post';
 import InstaPost from './components/InstaPost';
+import TumblrPost from './components/TumblrPost';
+
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -14,11 +16,19 @@ function App() {
 
   return (
     <div className="App">
-      {posts.map((post) => (
-          post.source === "AO3"
-            ? <Ao3Post post={post}/>
-            : <InstaPost post={post}/>
-      ))}
+      {posts.map((post) => {
+          console.log(post.source);
+          switch (post.source) {
+              case "AO3":
+                return <Ao3Post key={post.id} post={post}/>
+              case "INSTA":
+                return <InstaPost key={post.id} post={post}/>
+              case "TUMBLR":
+                return <TumblrPost key={post.id} post={post}/>
+              default:
+                  return <div key={post.id}></div>
+          }
+      })}
     </div>
   );
 }

@@ -6,6 +6,7 @@ const slugify = require('slugify')
 const fakeData = require('./mockInstaData');
 const dayjs = require('dayjs')
 const tags = require("../tags");
+const constants = require("../constants.json");
 
 class InstaFetcher {
     // {"message":"Please wait a few minutes before you try again.","status":"fail"} 5:48pm
@@ -40,7 +41,7 @@ class InstaFetcher {
         const parsedPosts = this.parsePosts(posts);
 
         const postsForCache = parsedPosts.map(post => ({
-            ...post, id: slugify(`insta ${post.id}`)
+            ...post, id: slugify(`insta ${post.id}`), source: constants.INSTA
         }));
 
         //todo: only add new things
