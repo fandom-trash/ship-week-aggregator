@@ -43,9 +43,27 @@ class TumblrFetcher {
 
     async fetchPosts() {
         const targetTag = tags.TUMBLR;
-        const postData = await this.client.taggedPosts(targetTag, {limit: 30}, function (err, data) {
-            return data;
-        });
+         let postData = await this.client.taggedPosts(targetTag, function (err, data) {
+             return data;
+         });
+
+        if (this.cache.length === 0) {
+            let thisPage = postData;
+
+            while (thisPage.length) {
+                let lastTimestampInResponse = thisPage[thisPage.length - 1].timestamp;
+
+                thisPage = await this.client.taggedPosts(targetTag, {before: lastTimestampInResponse}, function (err, data) {
+                    return data;
+                });
+
+                if (thisPage.length) {
+                    postData = [].concat(postData, thisPage);
+                }
+
+            }
+        }
+
         return postData;
     }
 
