@@ -8,9 +8,9 @@ const tags = require("../tags.json");
 
 
 class Ao3Fetcher {
-    constructor(forReal = true) {
+    constructor() {
         this.url = `https://archiveofourown.org/tags/${tags.AO3}/works`;
-        this.forReal = forReal;
+        this.forReal = process.env.FOR_REAL === "true";
         this.cache = [];
         this.cacheIds = [];
         this.update();

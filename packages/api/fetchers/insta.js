@@ -9,9 +9,10 @@ const tags = require("../tags");
 const constants = require("../constants.json");
 
 class InstaFetcher {
-    constructor(forReal = true) {
+    constructor() {
         this.authState = { authenticated: false, status: 'not attempted' };
-        this.forReal = forReal;
+        this.forReal = process.env.FOR_REAL === "true";
+        console.log("insta for real = ", this.forReal);
         this.cache = [];
         this.update();
         this.refreshRateMinutes = 5;
@@ -30,6 +31,7 @@ class InstaFetcher {
         const results = this.forReal
             ? await this.fetchPosts()
             : await this.fakeFetch();
+
 
         if (!results) {
             // TODO log + alert

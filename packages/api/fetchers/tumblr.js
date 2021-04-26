@@ -4,8 +4,8 @@ const constants = require("../constants.json");
 const fakeData = require('./mockTumblrData');
 
 class TumblrFetcher {
-    constructor(forReal = true) {
-        this.forReal = forReal;
+    constructor() {
+        this.forReal = process.env.FOR_REAL === "true";
         this.cache = [];
         this.cacheIds = [];
 
