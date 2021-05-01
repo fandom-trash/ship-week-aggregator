@@ -13,7 +13,7 @@ var app = express();
 
 // proxy middleware options
 const options = {
-  target: 'kataang-week.com',
+  target: 'https://scontent-iad3-1.cdninstagram.com',
   changeOrigin: true,
 };
 
