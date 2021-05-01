@@ -9,7 +9,6 @@ function App() {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         fetch("/posts").then((r) => r.json()).then((posts) => {
-            console.log(posts);
             setPosts(posts);
         });
     }, [])
@@ -17,7 +16,6 @@ function App() {
   return (
     <div className="App">
       {posts.map((post) => {
-          console.log(post.source);
           switch (post.source) {
               case "AO3":
                 return <Ao3Post key={post.id} post={post}/>
