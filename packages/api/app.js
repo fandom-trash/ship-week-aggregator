@@ -1,32 +1,32 @@
-require('dotenv').config()
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const createProxyMiddleware = require('http-proxy-middleware');
+require("dotenv").config();
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
+const createProxyMiddleware = require("http-proxy-middleware");
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
 
 var app = express();
 
 // proxy middleware options
 const options = {
-  target: 'https://scontent-iad3-1.cdninstagram.com',
+  target: "https://scontent-iad3-1.cdninstagram.com",
   changeOrigin: true,
 };
 
-const exampleProxy = createProxyMiddleware('/proxy', options);
+const exampleProxy = createProxyMiddleware("/proxy", options);
 app.use(exampleProxy);
 
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/', indexRouter);
+app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
@@ -45,10 +45,9 @@ app.use('/', indexRouter);
 // });
 
 var server = app.listen(8081, function () {
-   var host = server.address().address
-   var port = server.address().port
-})
-
+  var host = server.address().address;
+  var port = server.address().port;
+});
 
 app.listen(3030);
 
