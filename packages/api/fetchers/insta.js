@@ -42,7 +42,9 @@ class InstaFetcher {
         const parsedPosts = this.parsePosts(posts);
 
         const postsForCache = parsedPosts.map(post => ({
-            ...post, id: slugify(`insta ${post.id}`), source: constants.INSTA
+            ...post,
+            id: slugify(`insta ${post.id}`),
+            source: constants.INSTA,
         }));
 
         //todo: only add new things

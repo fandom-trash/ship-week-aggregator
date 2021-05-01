@@ -4,11 +4,23 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const createProxyMiddleware = require('http-proxy-middleware');
+
+console.log(createProxyMiddleware);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+// proxy middleware options
+const options = {
+  target: 'kataang-week.com',
+  changeOrigin: true,
+};
+
+const exampleProxy = createProxyMiddleware('/proxy', options);
+app.use(exampleProxy);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -40,5 +52,8 @@ var server = app.listen(8081, function () {
 
    console.log("Example app listening at http://%s:%s", host, port)
 })
+
+
+app.listen(3030);
 
 module.exports = app;
