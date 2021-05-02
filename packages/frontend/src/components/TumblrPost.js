@@ -10,6 +10,7 @@ function TumblrPost({ post }) {
 
   return (
     <div className="" key={post.id}>
+      <h4>from tumblr</h4>
       <p>{post.blog_name}</p>
       <img src={post.thumbnail_src} />
       <ul>{photos}</ul>

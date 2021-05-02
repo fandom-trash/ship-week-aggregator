@@ -19,6 +19,7 @@ function TwitterPost({ post }) {
 
   return (
     <div className="" key={post.id}>
+      <h4>from twitter</h4>
       <p>
         user: <a href={post.userProfileLink}>{post.user.name}</a>
       </p>
