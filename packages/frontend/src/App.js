@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Ao3Post from "./components/Ao3Post";
 import InstaPost from "./components/InstaPost";
 import TumblrPost from "./components/TumblrPost";
+import TwitterPost from "./components/TwitterPost";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -24,6 +25,8 @@ function App() {
             return <InstaPost key={post.id} post={post} />;
           case "TUMBLR":
             return <TumblrPost key={post.id} post={post} />;
+          case "TWITTER":
+            return <TwitterPost key={post.id} post={post} />;
           default:
             return <div key={post.id}></div>;
         }

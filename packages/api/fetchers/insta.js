@@ -41,6 +41,8 @@ class InstaFetcher {
     const posts = results.hashtag.edge_hashtag_to_media.edges.map(
       (edge) => edge.node
     );
+
+    //TODO merge parsePosts and the id map for cache
     const parsedPosts = this.parsePosts(posts);
 
     const postsForCache = parsedPosts.map((post) => ({

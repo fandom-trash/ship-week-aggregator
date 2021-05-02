@@ -2,6 +2,7 @@ const tumblr = require("tumblr.js");
 const tags = require("../tags.json");
 const constants = require("../constants.json");
 const fakeData = require("./mockTumblrData");
+const slugify = require("slugify");
 
 class TumblrFetcher {
   constructor() {
@@ -36,6 +37,7 @@ class TumblrFetcher {
 
     const postsForCache = posts.map((post) => ({
       ...post,
+      id: slugify(`tumblr ${post.id}`),
       source: constants.TUMBLR,
     }));
 
