@@ -50,12 +50,12 @@ This is a *lot* of data that we're requesting. If you want to limit to only a ce
 ```
 // For example, to only see ao3 posts:
 
-   9 const fetchers = [
-  10   new ao3.Ao3Fetcher(),
-  11   // new insta.InstaFetcher(),
-  12   // new tumblr.TumblrFetcher(),
-  13   // new twitter.TwitterFetcher(),
-  14 ];
+   const fetchers = [
+     new ao3.Ao3Fetcher(),
+     // new insta.InstaFetcher(),
+     // new tumblr.TumblrFetcher(),
+     // new twitter.TwitterFetcher(),
+   ];
 
 ```
 
