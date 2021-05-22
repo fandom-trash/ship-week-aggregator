@@ -37,7 +37,7 @@ It's automatic when you merge into `main` 🎉
 # General Structure
 This is essentially structured as two separate apps, one for the frontend and one for the backend. These live at `packages/api` and `packages/frontend`. The backend is an Express app, the frontend is a React app. 
 
-The tags that we search for across platforms are defined in `packages/api/tags.json`. For now these are set to either whatever version of "Kataang Week 2020" applied to a given platform (or the more general "kataang" for twitter because they make requesting year-old content a huge pain in the ass). 
+The tags that we search for across platforms are defined in `packages/api/tags.json`. For now these are set to whatever version of "Kataang Week 2020" applied to a given platform (or the more general "kataang" for twitter because they make requesting year-old content a huge pain in the ass). 
 
 We request data on those tags from each platform, sort the posts, and send that to the react app. 
 
