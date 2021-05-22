@@ -68,19 +68,20 @@ lol yeah i should probably write some
 ## Post Data
 I’m not really sure exactly what we want to display on the page, so right now I’m passing the frontend all post data returned from the various apis (with the addition of a `source` attribute and an id). Some of this data is dummy thicc and we’ll probably want to prune it down a bit once we know exactly what is needed to display things. It's also possible some useful info is missing and I'll need to add additional requests to gather it. (The only thing I know about that's currently missing is the instagram username, so let me know if you see anything else that we need.)
 
-Below are examples of each post type. You can always see the raw data that the express app has gathered by looking at `http://localhost:8081/posts`
+Below are examples of each post type. You can always see the raw data that the express app has gathered by looking at `http://localhost:8081/posts` (or at kataang-week.com/posts`) 
 
 ### AO3
 This is the simplest cause I’m just scraping the website.
 ```
   {
-    title: "Kataang Week 2020: The Red Thread of Fate",
-    author: "TheBakingQueen",
-    summary: null,
-    date: "27 Jan 2021",
-    link: "/works/29034420",
-    author_link: "/users/TheBakingQueen/pseuds/TheBakingQueen",
-    source: "AO3",
+   "title": "Kataang Week 2020: Blood/Wounds",
+   "author": "TheBakingQueen",
+   "summary": "12 years of being endgame, 12 years of being possibly the most adorable couple in TV history, and 7 days with 7 prompts for 7 oneshots for our favorite couple. Kataang Week 2020 Day 3: Blood/Wounds. On the field of battle, Aang gets hurt. Katara, naturally, freaks out.",
+   "date": "2021-01-28T05:00:00.000Z",
+   "link": "/works/29033019",
+   "author_link": "/users/TheBakingQueen/pseuds/TheBakingQueen",
+   "source": "AO3",
+   "id": "AO3-Kataang-Week-2020:-BloodWounds"
   }
 ```
 ### Insta
