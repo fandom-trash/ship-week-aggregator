@@ -31,6 +31,8 @@ The default is for it to use dummy data in dev. This is because we're relying on
 
 For frontend development, react hot reloads, so this is less important. Feel free to make real requests if you prefer. 
 
+## Deploying
+It's automatic when you merge into `main` 🎉
 
 # General Structure
 This is essentially structured as two separate apps, one for the frontend and one for the backend. These live at `packages/api` and `packages/frontend`. The backend is an Express app, the frontend is a React app. 
